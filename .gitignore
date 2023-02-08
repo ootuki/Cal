@@ -1,2 +1,4 @@
 #file
 ignoretest.txt
+# file to write the calculation result
+result.txt
