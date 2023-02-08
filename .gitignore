@@ -1,2 +1,7 @@
 #file
 ignoretest.txt
+# file to write down the calculation result
+result.txt
+# executable file made by gcc
+a.exe
+a.out
