@@ -37,7 +37,10 @@ int main (void)
 //	printf("please input the operator, plus:1 minus:2 multiple:3 divide:4 ::\n");
 //	scanf("%d", &ui.openum);
 	printf("please input the operator as a charactor (+ - * /) ::\n");
-	scanf(" %c", &ui.opec);
+	// getchar() gets a char from standard input, and returns its value. 
+	// Here it is used for waste a line break code (\LF\CR or \CR)
+	getchar();
+	scanf("%c", &ui.opec);
 	
 	// operator (plus)
 	// Currently not in use. Using those in the switch syntax below, gcc errors. (C accepts only int in as-is ?)
