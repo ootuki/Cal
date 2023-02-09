@@ -9,6 +9,7 @@ struct user_input {
 
 	// operator, TODO make it string if I have enoug time.
 	int openum;
+	char opec;
 };
 
 int main (void)
@@ -16,7 +17,7 @@ int main (void)
 	// structure
 	// input tmp values as my book says 
 	// "setting values to a structure at the time of initiation is a good manner "
-	struct user_input ui = {1.1, 2.4, 3};
+	struct user_input ui = {1.1, 2.4, 3, '-'};
 	
 	// File and data
 	FILE *fp;
@@ -26,25 +27,32 @@ int main (void)
 	float resf;
 		
 
-	printf("please imput your 1st number:");
+	printf("please imput your 1st number:\n");
 	scanf("%f", &ui.flt1);
-	printf("please input your 2nd number:");
+	printf("please input your 2nd number:\n");
 	scanf("%f", &ui.flt2);
 
 
 	// input operator number
-	printf("please input the operator, plus:1 minus:2 multiple:3 divide:4 ::");
+	printf("please input the operator, plus:1 minus:2 multiple:3 divide:4 ::\n");
 	scanf("%d", &ui.openum);
+	printf("please input the operator as a charactor (+ - * /) ::\n");
+	scanf("%c", &ui.opec);
 	
 	// operator (plus)
-	// TODO make it const and use in the switch syntax.
+	// Currently not in use. Using those in the switch syntax below, gcc errors. (C accepts only int in as-is ?)
 	const int plus_ope = 1;
-	int minus_ope = 2;
-	int multi_ope = 3;
-	int divide_ope = 4;
+	const int minus_ope = 2;
+	const int multi_ope = 3;
+	const int divide_ope = 4;
 	
+	// convert the user input operator from char to int
+	if (ui.opec == '+') {
+		ui.openum = 1;
+	}
+	
+			
 	// Calculations and display
-
 	switch (ui.openum) {
 		case 1:
 			resf = ui.flt1 + ui.flt2;
@@ -89,9 +97,11 @@ int main (void)
 		fprintf(fp, "Calculation result in float:   \n" );		
 		fprintf(fp, "%f\n", resf );
 		
+		fprintf(fp, "after this line is c:%c\n", ui.opec );
+		
 		fclose(fp);
 	}	
-
+	
     return 0;
 }
 
