@@ -3,8 +3,8 @@
 struct user_input {
 	
 	// User's inputs.(Float) 2 numerics.
-    float flt1;
-    float flt2;
+	float flt1;
+	float flt2;
 
 
 	// operator, TODO make it string if I have enoug time.
@@ -25,17 +25,13 @@ int main (void)
 	
 	// result of calculation
 	float resf;
-		
-
+	
 	printf("please imput your 1st number:\n");
 	scanf("%f", &ui.flt1);
 	printf("please input your 2nd number:\n");
 	scanf("%f", &ui.flt2);
 
-
 	// input operator number
-//	printf("please input the operator, plus:1 minus:2 multiple:3 divide:4 ::\n");
-//	scanf("%d", &ui.openum);
 	printf("please input the operator as a charactor (+ - * /) ::\n");
 	// getchar() gets a char from standard input, and returns its value. 
 	// Here it is used for waste a line break code (\LF\CR or \CR)
@@ -66,25 +62,19 @@ int main (void)
 	switch (ui.openum) {
 		case 1:
 			resf = ui.flt1 + ui.flt2;
-			
 			break;
 		
 		case 2:
 			resf = ui.flt1 - ui.flt2;
-			
 			break;
 			
 		case 3:
 			resf = ui.flt1 * ui.flt2;
-	
-			
 			break;
 			
 		case 4:
 			resf = ui.flt1 / ui.flt2;
-			
 			break;
-			
 			
 		default:
 			printf("switch syntax go into failed\n");
@@ -93,7 +83,7 @@ int main (void)
 			resf = 88.99;
 		
 	}
-	
+	// check the file existance
 	if (fp == NULL) {
 		printf("failed to open file . \n");
 	}
@@ -101,17 +91,16 @@ int main (void)
 		// operation to the file.
 		printf( "Calculation Result(float) is %f\n", resf);
 		// write file the users input
-		fprintf(fp, "1st input: 2nd input:  operator in char:");		
-		fprintf(fp, "%f %f %d\n", ui.flt1, ui.flt2, ui.opec );
-	
-	
+		fprintf(fp, "1st input: 2nd input:  operator in char:\n");
+		fprintf(fp, "%f %f %c\n", ui.flt1, ui.flt2, ui.opec );
+		
 		// write file the calc result
-		fprintf(fp, "Calculation result in float:   \n" );		
+		fprintf(fp, "Calculation result in float:   \n" );
 		fprintf(fp, "%f\n", resf );
 		
 		fclose(fp);
 	}	
 	
-    return 0;
+	return 0;
 }
 
