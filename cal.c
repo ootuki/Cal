@@ -17,7 +17,7 @@ int main (void)
 	// structure
 	// input tmp values as my book says 
 	// "setting values to a structure at the time of initiation is a good manner "
-	struct user_input ui = {1.1, 2.4, 3, '-'};
+	struct user_input ui = {1.1, 2.4, 1, '+'};
 	
 	// File and data
 	FILE *fp;
@@ -34,10 +34,10 @@ int main (void)
 
 
 	// input operator number
-	printf("please input the operator, plus:1 minus:2 multiple:3 divide:4 ::\n");
-	scanf("%d", &ui.openum);
+//	printf("please input the operator, plus:1 minus:2 multiple:3 divide:4 ::\n");
+//	scanf("%d", &ui.openum);
 	printf("please input the operator as a charactor (+ - * /) ::\n");
-	scanf("%c", &ui.opec);
+	scanf(" %c", &ui.opec);
 	
 	// operator (plus)
 	// Currently not in use. Using those in the switch syntax below, gcc errors. (C accepts only int in as-is ?)
@@ -49,9 +49,16 @@ int main (void)
 	// convert the user input operator from char to int
 	if (ui.opec == '+') {
 		ui.openum = 1;
+	} else if (ui.opec == '-') {
+		ui.openum = 2;
+	} else if (ui.opec == '*') {
+		ui.openum = 3;
+	} else if (ui.opec == '/') {
+		ui.openum = 4;
+	} else {
+		printf("Please input a paticular operator. This program uses '+' instead of yours");
 	}
 	
-			
 	// Calculations and display
 	switch (ui.openum) {
 		case 1:
@@ -78,6 +85,8 @@ int main (void)
 			
 		default:
 			printf("switch syntax go into failed\n");
+			// 88.99 is only for a marker in the case of switch logic fails and comes to default section.
+			// Remove it later.
 			resf = 88.99;
 		
 	}
@@ -89,15 +98,13 @@ int main (void)
 		// operation to the file.
 		printf( "Calculation Result(float) is %f\n", resf);
 		// write file the users input
-		fprintf(fp, "1st input: 2nd input:  Calculation operand plus:1 minus:2 multiple:3 divide:4 \n");		
-		fprintf(fp, "%f %f %d\n", ui.flt1, ui.flt2, ui.openum );
+		fprintf(fp, "1st input: 2nd input:  operator in char:");		
+		fprintf(fp, "%f %f %d\n", ui.flt1, ui.flt2, ui.opec );
 	
 	
 		// write file the calc result
 		fprintf(fp, "Calculation result in float:   \n" );		
 		fprintf(fp, "%f\n", resf );
-		
-		fprintf(fp, "after this line is c:%c\n", ui.opec );
 		
 		fclose(fp);
 	}	
