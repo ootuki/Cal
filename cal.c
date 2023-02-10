@@ -6,22 +6,22 @@ struct user_input {
 	float flt1;
 	float flt2;
 
-
 	// operator, TODO make it string if I have enoug time.
 	int openum;
 	char opec;
 };
+// function declarations
+int convertInt (char);
+float calc (float, float, int);
+int fileWrt (float , float , char , float );
 
+// main function
 int main (void)
 {
 	// structure
 	// input tmp values as my book says 
 	// "setting values to a structure at the time of initiation is a good manner "
 	struct user_input ui = {1.1, 2.4, 1, '+'};
-	
-	// File and data
-	FILE *fp;
-	fp = fopen ("result.txt", "w");
 	
 	// result of calculation
 	float resf;
@@ -38,42 +38,78 @@ int main (void)
 	getchar();
 	scanf("%c", &ui.opec);
 	
-	// operator (plus)
+	// 4 int constants for each operators.
 	// Currently not in use. Using those in the switch syntax below, gcc errors. (C accepts only int in as-is ?)
 	const int plus_ope = 1;
 	const int minus_ope = 2;
 	const int multi_ope = 3;
 	const int divide_ope = 4;
+		
+	// prepare some valuables to stock values in "ui" structure. 
+	// Otherwise a duplicated structure declaration is mandatory inside the fileWrt function.
+	// TODO ask Pranav san that which is the good manner. Prepare a temp storages or again declare in another function.
+	float flt1 = ui.flt1;
+	float flt2 = ui.flt2;
+	int openum = ui.openum;
+	char opec = ui.opec;
 	
-	// convert the user input operator from char to int
-	if (ui.opec == '+') {
-		ui.openum = 1;
-	} else if (ui.opec == '-') {
-		ui.openum = 2;
-	} else if (ui.opec == '*') {
-		ui.openum = 3;
-	} else if (ui.opec == '/') {
-		ui.openum = 4;
+	// convert from char to int
+	openum = convertInt (opec); 
+	
+	// calculate
+	resf = calc(flt1, flt2, openum);
+	
+	// Boolean mentions file handle failed or not (0: not failed(success) 1: fail)
+	int failed = 0;
+	
+	failed = fileWrt(flt1, flt2, opec, resf);
+	if (failed == 1) {
+			printf("failed on file handling. \n");
+	}
+	
+	return 0;
+}
+
+// convert the user input operator from char to int
+int convertInt (char opec) 
+{
+	int openum = 1;
+	if (opec == '+') {
+		openum = 1;
+	} else if (opec == '-') {
+		openum = 2;
+	} else if (opec == '*') {
+		openum = 3;
+	} else if (opec == '/') {
+		openum = 4;
 	} else {
 		printf("Please input a paticular operator. This program uses '+' instead of yours");
 	}
-	
+
+	return openum;
+}	
+
+// calculation
+float calc (float flt1, float flt2, int openum)
+{
+	// return value. Result value. 98.76 is a tmp num for debugging.
+	float resf = 98.76;
 	// Calculations and display
-	switch (ui.openum) {
+	switch (openum) {
 		case 1:
-			resf = ui.flt1 + ui.flt2;
+			resf = flt1 + flt2;
 			break;
 		
 		case 2:
-			resf = ui.flt1 - ui.flt2;
+			resf = flt1 - flt2;
 			break;
 			
 		case 3:
-			resf = ui.flt1 * ui.flt2;
+			resf = flt1 * flt2;
 			break;
 			
 		case 4:
-			resf = ui.flt1 / ui.flt2;
+			resf = flt1 / flt2;
 			break;
 			
 		default:
@@ -83,24 +119,41 @@ int main (void)
 			resf = 88.99;
 		
 	}
+	
+	return resf;
+}	
+
+// file handle function
+// TODO let the input values be a structure.
+int fileWrt (float flt1, float flt2, char opec, float resf)
+{
+	// file write success or not. Boolean
+	int failed = 0;
+	
+	// File and data
+	FILE *fp;
+	fp = fopen ("result.txt", "w");
+
 	// check the file existance
 	if (fp == NULL) {
-		printf("failed to open file . \n");
+		failed = 1; 
 	}
 	else {
 		// operation to the file.
 		printf( "Calculation Result(float) is %f\n", resf);
 		// write file the users input
 		fprintf(fp, "1st input: 2nd input:  operator in char:\n");
-		fprintf(fp, "%f %f %c\n", ui.flt1, ui.flt2, ui.opec );
+		fprintf(fp, "%f %f %c\n", flt1, flt2, opec );
 		
 		// write file the calc result
 		fprintf(fp, "Calculation result in float:   \n" );
 		fprintf(fp, "%f\n", resf );
 		
 		fclose(fp);
+		
+		failed = 0;
 	}	
 	
-	return 0;
+	return failed;
 }
 
