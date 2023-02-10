@@ -26,26 +26,51 @@ int main (void)
 	ui.flt2 = 2.2;
 	ui.opec = '+';
 	
-	// result of calculation
-	float resf;
-	
-	ui = getUserInput();
-
-	// prepare some valuables to stock values in "ui" structure. 
-	// Otherwise a duplicated structure declaration is mandatory inside the fileWrt function.
-	// TODO ask Pranav san that which is the good manner. 
-	// Prepare a temp storages or again declare in another function, which one is better.
-	float flt1 = ui.flt1;
-	float flt2 = ui.flt2;
+	float flt1;
+	float flt2;
 	int openum;
-	char opec = ui.opec;
+	char opec;
+	// result of calculation
+	float resf = 88.8;
+	
+	// flag to evaluate loop or not
+	int flagLoop = 1;
+
+	// user's decision, if continue calc or not. (y/n)
+	char contc;
+
+	while (flagLoop) {
 		
-	
-	// convert from char to int
-	openum = convertInt (opec); 
-	
-	// calculate
-	resf = calc(flt1, flt2, openum);
+		ui = getUserInput();
+
+		// prepare some valuables to stock values in "ui" structure. 
+		// Otherwise a duplicated structure declaration is mandatory inside the fileWrt function.
+		// TODO ask Pranav san that which is the good manner. 
+		// Prepare a temp storages or again declare in another function, which one is better.
+		flt1 = ui.flt1;
+		flt2 = ui.flt2;
+		
+		opec = ui.opec;
+		
+		// convert from char to int
+		openum = convertInt (opec); 
+		
+		// calculate
+		resf = calc(flt1, flt2, openum);
+		printf("Calculation Result ::%f\n", resf);
+		
+		// ask the user if continue calc or not.		
+		printf("Wish to continue next calculation?(y/n)\n");
+		getchar();
+		scanf("%c", &contc);
+		
+		if (contc == 'n') {
+			printf("Thank you for using. \n");
+			flagLoop = 0;
+		} else if (contc == 'y') {
+			flagLoop = 1;
+		}
+	}
 	
 	// Boolean mentions file handle failed or not (0: not failed(success) 1: fail)
 	int failed = 0;
