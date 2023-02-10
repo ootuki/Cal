@@ -1,16 +1,16 @@
 #include <stdio.h>
 // Using structures
-struct user_input {
+typedef struct {
 	
 	// User's inputs.(Float) 2 numerics.
 	float flt1;
 	float flt2;
 
-	// operator, TODO make it string if I have enoug time.
-	int openum;
+	// operator, in char
 	char opec;
-};
+}user_input;
 // function declarations
+user_input getUserInput();
 int convertInt (char);
 float calc (float, float, int);
 int fileWrt (float , float , char , float );
@@ -19,39 +19,27 @@ int fileWrt (float , float , char , float );
 int main (void)
 {
 	// structure
-	// input tmp values as my book says 
+	// input tmp values as my text book says that
 	// "setting values to a structure at the time of initiation is a good manner "
-	struct user_input ui = {1.1, 2.4, 1, '+'};
+	user_input ui;
+	ui.flt1 = 1.1;
+	ui.flt2 = 2.2;
+	ui.opec = '+';
 	
 	// result of calculation
 	float resf;
 	
-	printf("please imput your 1st number:\n");
-	scanf("%f", &ui.flt1);
-	printf("please input your 2nd number:\n");
-	scanf("%f", &ui.flt2);
+	ui = getUserInput();
 
-	// input operator number
-	printf("please input the operator as a charactor (+ - * /) ::\n");
-	// getchar() gets a char from standard input, and returns its value. 
-	// Here it is used for waste a line break code (\LF\CR or \CR)
-	getchar();
-	scanf("%c", &ui.opec);
-	
-	// 4 int constants for each operators.
-	// Currently not in use. Using those in the switch syntax below, gcc errors. (C accepts only int in as-is ?)
-	const int plus_ope = 1;
-	const int minus_ope = 2;
-	const int multi_ope = 3;
-	const int divide_ope = 4;
-		
 	// prepare some valuables to stock values in "ui" structure. 
 	// Otherwise a duplicated structure declaration is mandatory inside the fileWrt function.
-	// TODO ask Pranav san that which is the good manner. Prepare a temp storages or again declare in another function.
+	// TODO ask Pranav san that which is the good manner. 
+	// Prepare a temp storages or again declare in another function, which one is better.
 	float flt1 = ui.flt1;
 	float flt2 = ui.flt2;
-	int openum = ui.openum;
+	int openum;
 	char opec = ui.opec;
+		
 	
 	// convert from char to int
 	openum = convertInt (opec); 
@@ -69,7 +57,27 @@ int main (void)
 	
 	return 0;
 }
+user_input getUserInput() 
+{
+	user_input ui;
+	ui.flt1 = 3.3;
+	ui.flt2 = 4.4;
+	ui.opec = '-';
 
+	printf("please imput your 1st number:\n");
+	scanf("%f", &ui.flt1);
+	printf("please input your 2nd number:\n");
+	scanf("%f", &ui.flt2);
+
+	// input operator number
+	printf("please input the operator as a charactor (+ - * /) ::\n");
+	// getchar() gets a char from standard input, and returns its value. 
+	// Here it is used for waste a line break code (\LF\CR or \CR)
+	getchar();
+	scanf("%c", &ui.opec);
+
+	return ui;
+}
 // convert the user input operator from char to int
 int convertInt (char opec) 
 {
