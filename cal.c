@@ -13,7 +13,8 @@ typedef struct {
 user_input getUserInput();
 int convertInt (char);
 float calc (float, float, int);
-int fileWrt (float , float , char , float );
+int fileInit ();
+int fileWrt (float , float , char , float, int );
 
 // main function
 int main (void)
@@ -38,7 +39,15 @@ int main (void)
 
 	// user's decision, if continue calc or not. (y/n)
 	char contc;
-
+	
+	// Boolean mentions file handle failed or not (0: not failed(success) 1: fail)
+	int failed = 0;
+	
+	// count of the calculations.
+	int calCount = 0;
+	
+	// initialize the file.
+	fileInit ();
 	while (flagLoop) {
 		
 		ui = getUserInput();
@@ -57,12 +66,20 @@ int main (void)
 		
 		// calculate
 		resf = calc(flt1, flt2, openum);
-		printf("Calculation Result ::%f\n", resf);
+		// increments the count
+		calCount++;
 		
 		// ask the user if continue calc or not.		
 		printf("Wish to continue next calculation?(y/n)\n");
 		getchar();
 		scanf("%c", &contc);
+		
+		// write the result to the file.
+		failed = fileWrt(flt1, flt2, opec, resf, calCount);
+		// if filehandling get failed, print the error.
+		if (failed == 1) {
+			perror("failed on file handling. \n");
+	}
 		
 		if (contc == 'n') {
 			printf("Thank you for using. \n");
@@ -72,13 +89,7 @@ int main (void)
 		}
 	}
 	
-	// Boolean mentions file handle failed or not (0: not failed(success) 1: fail)
-	int failed = 0;
 	
-	failed = fileWrt(flt1, flt2, opec, resf);
-	if (failed == 1) {
-			printf("failed on file handling. \n");
-	}
 	
 	return 0;
 }
@@ -122,7 +133,7 @@ int convertInt (char opec)
 	return openum;
 }	
 
-// calculation
+// calculation and print to standari IO
 float calc (float flt1, float flt2, int openum)
 {
 	// return value. Result value. 98.76 is a tmp num for debugging.
@@ -152,20 +163,38 @@ float calc (float flt1, float flt2, int openum)
 			resf = 88.99;
 		
 	}
+	printf("The Calculation Result is::%f\n", resf);
 	
 	return resf;
-}	
+}
+// file handle. clean and initialize the file.
+fileInit ()
+{
+	// File and data
+	FILE *fp;
+	fp = fopen ("result.txt", "w");
+	
+	// check the file existance
+	if (fp == NULL) {
+		perror("failed on file initialize. \n");
+	}
+	else {
+		// operation to the file.
+		fprintf(fp, "***Calculation Result List***\n");
+		fclose(fp);
+	}		
+}
 
-// file handle function
+// file handle function. Add results to the file.
 // TODO let the input values be a structure.
-int fileWrt (float flt1, float flt2, char opec, float resf)
+int fileWrt (float flt1, float flt2, char opec, float resf, int calCount)
 {
 	// file write success or not. Boolean
 	int failed = 0;
 	
 	// File and data
 	FILE *fp;
-	fp = fopen ("result.txt", "w");
+	fp = fopen ("result.txt", "a");
 
 	// check the file existance
 	if (fp == NULL) {
@@ -173,7 +202,8 @@ int fileWrt (float flt1, float flt2, char opec, float resf)
 	}
 	else {
 		// operation to the file.
-		printf( "Calculation Result(float) is %f\n", resf);
+		// count and result
+		fprintf(fp, "### Record of %i th calculation.\n", calCount );
 		// write file the users input
 		fprintf(fp, "1st input: 2nd input:  operator in char:\n");
 		fprintf(fp, "%f %f %c\n", flt1, flt2, opec );
