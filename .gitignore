@@ -1,7 +1,7 @@
-#file
-ignoretest.txt
 # file to write the calculation result
 result.txt
-# executable file made by gcc
+# executable files compiled by gcc
 a.exe
 a.out
+openresult.exe
+tester.exe
