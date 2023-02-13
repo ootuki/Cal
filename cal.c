@@ -86,6 +86,9 @@ int main (void)
 			flagLoop = 0;
 		} else if (contc == 'y') {
 			flagLoop = 1;
+		} else {
+			perror("Error:Invalid charactor input. \n");
+			return 0;
 		}
 	}
 	
@@ -127,7 +130,7 @@ int convertInt (char opec)
 	} else if (opec == '/') {
 		openum = 4;
 	} else {
-		printf("Please input a paticular operator. This program uses '+' instead of yours");
+		printf("Please input a proper operator. This program uses '+' instead of yours");
 	}
 
 	return openum;
